@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "root",
+    "password": "sreelakshmi19",
+    "database": "Subscribers_DB_DEV",
+    "host": "127.0.0.1",
+    "dialect": "mysql"
+  }
+}

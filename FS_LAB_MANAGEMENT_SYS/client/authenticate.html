@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticate Subscriber</title>
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(to right top, #64b5f6, #ff8a65);
+        overflow: hidden;
+        position: relative;
+    }
+
+    .container {
+        position: relative;
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        padding: 40px;
+        max-width: 400px;
+        width: 100%;
+        color: #333333;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .container h2 {
+        margin-bottom: 20px;
+        color: #2c3e50;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        margin-bottom: 5px;
+        font-weight: bold;
+        color: #34495e;
+    }
+
+    .form-group input {
+        border: 3px solid black;
+        border-radius: 5px;
+        padding: 8px;
+        font-size: 16px;
+        color: #2c3e50;
+    }
+
+    .btn-group {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }
+
+    .btn {
+        background-color: black;
+        color: #ffffff;
+        border: none;
+        border-radius: 5px;
+        padding: 15px 30px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+    .show-signup {
+        display: none;
+    }
+
+    .active-form {
+        display: block;
+    }
+
+</style>
+</head>
+
+<body>
+    <div class="animated-background"></div>
+    <div class="floating-objects" id="particles-container"></div>
+    <div class="container">
+        <div class="btn-group">
+            <button class="btn" onclick="showLoginForm()" >Login</button>
+            <button class="btn" onclick="showSignupForm()" style="margin-left: 10px">Register</button>
+        </div>
+        <div class="show-login active-form">
+            <h2>Login Form</h2>
+            <form class="login-form" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email">Email:</label>
+                    <input type="email" id="login-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password:</label>
+                    <input type="password" id="login-password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Login</button>
+            </form>
+        </div>
+        <div class="show-signup">
+            <h2>Signup Form</h2>
+            <form class="signup-form" onsubmit="handleSignup(event)">
+                <div class="form-group">
+                    <label for="signup-name">Name:</label>
+                    <input type="text" id="signup-name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email:</label>
+                    <input type="email" id="signup-email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password:</label>
+                    <input type="password" id="signup-password" name="password" required>
+                </div>
+                <button type="submit" class="btn">Register</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Function to create and append particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles-container');
+
+            for (let i = 0; i < 1000; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'floating-particle';
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                particlesContainer.appendChild(particle);
+            }
+        }
+
+        createParticles(); // Call the function to create particles
+
+        function showLoginForm() {
+            document.querySelector('.show-login').style.display = 'block';
+            document.querySelector('.show-signup').style.display = 'none';
+        }
+
+        function showSignupForm() {
+            document.querySelector('.show-login').style.display = 'none';
+            document.querySelector('.show-signup').style.display = 'block';
+        }
+
+        function handleSignup(event) {
+            event.preventDefault();
+
+            const form = document.querySelector('.signup-form');
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+
+            const signUpURL = `http://localhost:5000/subscriber/register`;
+
+            const userCredentials = {
+                name: name,
+                email: email,
+                password: password
+            };
+
+            fetch(signUpURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userCredentials)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Subscriber Successfully Registered, Now Please Login using your Credentials!!!');
+                        form.reset();
+                    } else {
+                        alert('Not able to register the Subscriber');
+                    }
+                })
+                .catch(error => {
+                    alert('Error registering the subscriber!');
+                });
+        }
+        function handleLogin(event) {
+            event.preventDefault();
+
+            const form = document.querySelector('.login-form');
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
+            const userCredentials = {
+                email: email,
+                password: password
+            };
+
+            const signUpURL = `http://localhost:5000/subscriber/login`;
+
+
+            fetch(signUpURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(userCredentials)
+            })
+                .then(response => {
+                    if (response.ok) {
+                        alert('Login-Successful!!');
+                        window.location.href = '/management';
+                    }
+                    else {
+                        alert('Failed to Login, Please check credentials!!');
+                    }
+                })
+                .catch(error => {
+                    alert('Error logging In the subscriber!');
+                });
+        }
+    </script>
+</body>
+
+</html>
