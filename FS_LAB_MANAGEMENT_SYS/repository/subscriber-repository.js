@@ -38,6 +38,8 @@ class SubscriberRepository {
             throw { error };
         }
     }
+    
+    
 
     async updateSubscriber(subscriberId, data) {
         try {

@@ -23,4 +23,4 @@
 
 ## Running process
 - execute `npm start` to start the server.
-- In the browser, head to the url `http://localhost:5000/` to use the Subscribers CRUD
+- In the browser, head to the url ` 'http://lab-management-system-three.vercel.app';` to use the Subscribers CRUD
